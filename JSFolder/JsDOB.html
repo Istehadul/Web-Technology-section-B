@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title>DOB Validation</title>
+</head>
+
+<body>
+
+    <h3>Date of Birth Validation</h3>
+
+    <form onsubmit="return validateDOB()">
+        <input type="text" id="dd" size="2"> /
+        <input type="text" id="mm" size="2"> /
+        <input type="text" id="yy" size="4">
+        <br>
+        <span id="error" style="color:red"></span>
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function validateDOB() {
+            let d = document.getElementById("dd").value.trim();
+            let m = document.getElementById("mm").value.trim();
+            let y = document.getElementById("yy").value.trim();
+            let error = document.getElementById("error");
+            error.innerHTML = "";
+
+            if (d === "" || m === "" || y === "") {
+                error.innerHTML = "No field can be empty.";
+                return false;
+            }
+
+            if (isNaN(d) || d < 0 || d > 31) {
+                error.innerHTML = "Day must be 0-31.";
+                return false;
+            }
+
+            if (isNaN(m) || m < 1 || m > 12) {
+                error.innerHTML = "Month must be 1-12.";
+                return false;
+            }
+
+            if (isNaN(y) || y < 1900 || y > 2016) {
+                error.innerHTML = "Year must be 1900-2016.";
+                return false;
+            }
+
+            error.style.color = "green";
+            error.innerHTML = "Valid Date of Birth!";
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,224 @@
+<html lang="en">
+
+<head>
+    <title>Person Profile Validation</title>
+</head>
+
+<body>
+
+    <h3>PERSON PROFILE</h3>
+
+    <form onsubmit="return validateForm()">
+
+        <!-- Name -->
+        Name: <input type="text" id="name">
+        <br>
+        <span id="nameError" style="color:red"></span>
+        <br><br>
+
+        <!-- Email -->
+        Email: <input type="text" id="email">
+        <br>
+        <span id="emailError" style="color:red"></span>
+        <br><br>
+
+        <!-- Gender -->
+        Gender:
+        <input type="radio" name="gender" value="Male"> Male
+        <input type="radio" name="gender" value="Female"> Female
+        <input type="radio" name="gender" value="Other"> Other
+        <br>
+        <span id="genderError" style="color:red"></span>
+        <br><br>
+
+        <!-- Date of Birth -->
+        Date of Birth:
+        <input type="text" id="dd" size="2" placeholder="dd"> /
+        <input type="text" id="mm" size="2" placeholder="mm"> /
+        <input type="text" id="yy" size="4" placeholder="yyyy">
+        <br>
+        <span id="dobError" style="color:red"></span>
+        <br><br>
+
+        <!-- Degree -->
+        Degree:
+        <input type="checkbox" class="deg" value="SSC"> SSC
+        <input type="checkbox" class="deg" value="HSC"> HSC
+        <input type="checkbox" class="deg" value="BSc"> BSc
+        <input type="checkbox" class="deg" value="MSc"> MSc
+        <br>
+        <span id="degreeError" style="color:red"></span>
+        <br><br>
+
+        <!-- Blood Group -->
+        Blood Group:
+        <select id="bg">
+        <option value="">Select</option>
+        <option>A+</option>
+        <option>A-</option>
+        <option>B+</option>
+        <option>B-</option>
+        <option>AB+</option>
+        <option>AB-</option>
+        <option>O+</option>
+        <option>O-</option>
+    </select>
+        <br>
+        <span id="bgError" style="color:red"></span>
+        <br><br>
+
+        <!-- User ID -->
+        User ID: <input type="text" id="uid">
+        <br>
+        <span id="uidError" style="color:red"></span>
+        <br><br>
+
+        <!-- Picture -->
+        Picture: <input type="file" id="pic">
+        <br>
+        <span id="picError" style="color:red"></span>
+        <br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Overall message -->
+    <p id="finalMsg" style="font-weight:bold"></p>
+
+    <script>
+        function validateForm() {
+            // reset overall message
+            document.getElementById("finalMsg").innerHTML = "";
+            document.getElementById("finalMsg").style.color = "red";
+
+            // get values
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let gender = document.querySelector("input[name='gender']:checked");
+            let d = document.getElementById("dd").value.trim();
+            let m = document.getElementById("mm").value.trim();
+            let y = document.getElementById("yy").value.trim();
+            let degrees = document.querySelectorAll(".deg:checked");
+            let bg = document.getElementById("bg").value;
+            let uid = document.getElementById("uid").value.trim();
+            let pic = document.getElementById("pic").value;
+
+            // clear old errors
+            let errs = ["nameError", "emailError", "genderError", "dobError", "degreeError", "bgError", "uidError", "picError"];
+            errs.forEach(e => document.getElementById(e).innerHTML = "");
+
+            let valid = true;
+
+            // NAME validation
+            if (name === "") {
+                document.getElementById("nameError").innerHTML = "Name cannot be empty.";
+                valid = false;
+            } else if (name.split(" ").filter(w => w.length > 0).length < 2) {
+                document.getElementById("nameError").innerHTML = "Must contain at least two words.";
+                valid = false;
+            } else if (!/^[A-Za-z.\- ]+$/.test(name)) {
+                document.getElementById("nameError").innerHTML = "Only letters, dot(.) or dash(-) allowed.";
+                valid = false;
+            } else if (!/^[A-Za-z]/.test(name)) {
+                document.getElementById("nameError").innerHTML = "Must start with a letter.";
+                valid = false;
+            } else {
+                document.getElementById("nameError").style.color = "green";
+                document.getElementById("nameError").innerHTML = "Valid name.";
+            }
+
+            // EMAIL validation
+            let emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === "") {
+                document.getElementById("emailError").innerHTML = "Email cannot be empty.";
+                valid = false;
+            } else if (!emailFormat.test(email)) {
+                document.getElementById("emailError").innerHTML = "Invalid email format.";
+                valid = false;
+            } else {
+                document.getElementById("emailError").style.color = "green";
+                document.getElementById("emailError").innerHTML = "Valid email.";
+            }
+
+            // GENDER validation
+            if (!gender) {
+                document.getElementById("genderError").innerHTML = "Gender must be selected.";
+                valid = false;
+            } else {
+                document.getElementById("genderError").style.color = "green";
+                document.getElementById("genderError").innerHTML = "Gender selected.";
+            }
+
+            // DOB validation
+            if (d === "" || m === "" || y === "") {
+                document.getElementById("dobError").innerHTML = "No field can be empty.";
+                valid = false;
+            } else if (isNaN(d) || d < 0 || d > 31) {
+                document.getElementById("dobError").innerHTML = "Day must be 0–31.";
+                valid = false;
+            } else if (isNaN(m) || m < 1 || m > 12) {
+                document.getElementById("dobError").innerHTML = "Month must be 1–12.";
+                valid = false;
+            } else if (isNaN(y) || y < 1900 || y > 2016) {
+                document.getElementById("dobError").innerHTML = "Year must be 1900–2016.";
+                valid = false;
+            } else {
+                document.getElementById("dobError").style.color = "green";
+                document.getElementById("dobError").innerHTML = "Valid DOB.";
+            }
+
+            // DEGREE validation
+            if (degrees.length === 0) {
+                document.getElementById("degreeError").innerHTML = "Select at least one degree.";
+                valid = false;
+            } else {
+                document.getElementById("degreeError").style.color = "green";
+                document.getElementById("degreeError").innerHTML = "Degree selected.";
+            }
+
+            // BLOOD GROUP validation
+            if (bg === "") {
+                document.getElementById("bgError").innerHTML = "Select a blood group.";
+                valid = false;
+            } else {
+                document.getElementById("bgError").style.color = "green";
+                document.getElementById("bgError").innerHTML = "Blood group selected.";
+            }
+
+            // USER ID validation
+            if (uid === "") {
+                document.getElementById("uidError").innerHTML = "User ID cannot be empty.";
+                valid = false;
+            } else if (isNaN(uid) || uid <= 0) {
+                document.getElementById("uidError").innerHTML = "User ID must be a positive number.";
+                valid = false;
+            } else {
+                document.getElementById("uidError").style.color = "green";
+                document.getElementById("uidError").innerHTML = "Valid User ID.";
+            }
+
+            // PICTURE validation
+            if (pic === "") {
+                document.getElementById("picError").innerHTML = "Please upload a picture.";
+                valid = false;
+            } else {
+                document.getElementById("picError").style.color = "green";
+                document.getElementById("picError").innerHTML = "Picture uploaded.";
+            }
+
+            // Final message
+            if (valid) {
+                document.getElementById("finalMsg").style.color = "green";
+                document.getElementById("finalMsg").innerHTML = "✅ Form Submitted Successfully!";
+            } else {
+                document.getElementById("finalMsg").style.color = "red";
+                document.getElementById("finalMsg").innerHTML = "❌ Please fix the errors above.";
+            }
+
+            return false; // prevent page reload
+        }
+    </script>
+
+</body>
+
+</html>

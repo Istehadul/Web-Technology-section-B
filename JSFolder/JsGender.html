@@ -1,0 +1,42 @@
+<html lang="en">
+
+<head>
+    <title>Gender Validation</title>
+</head>
+
+<body>
+    <h3>Gender Validation</h3>
+</body>
+<form onsubmit="return validateGender()">
+    <input type="radio" name="gender" value="Male">Male
+    <input type="radio" name="gender" value="Female">Female
+    <input type="radio" name="gender" value="Other">Other
+    <br>
+    <span id="error" style="color:red"></span>
+    <br><br>
+    <input type="submit" value="Submit">
+
+</form>
+
+<script>
+    function validateGender() {
+
+        let error = document.getElementById("error");
+        let selected = document.querySelector("input[name='gender']:checked");
+        error.style.color = "red";
+        error.innerHTML = "";
+
+        if (!selected) {
+            error.innerHTML = "Gender must be selected.";
+            return false;
+        }
+
+        // Success
+        error.style.color = "green";
+        error.innerHTML = "Gender selected: " + selected.value;
+
+        return false; // keep message on screen
+    }
+</script>
+
+</html>

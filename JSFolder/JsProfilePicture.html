@@ -1,0 +1,48 @@
+<html lang="en">
+
+<head>
+    <title>UserID & Photo Validation</title>
+</head>
+
+<body>
+
+    <h3>UserID & Photo</h3>
+
+    <form onsubmit="return validateUser()">
+        UserID: <input type="text" id="uid"><br><br> Picture: <input type="file" id="img"><br><br>
+        <span id="error" style="color:red"></span><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function validateUser() {
+            let id = document.getElementById("uid").value.trim();
+            let img = document.getElementById("img").value;
+            let error = document.getElementById("error");
+
+            error.innerHTML = "";
+
+            if (id === "") {
+                error.innerHTML = "UserID cannot be empty.";
+                return false;
+            }
+
+            if (isNaN(id) || id <= 0) {
+                error.innerHTML = "UserID must be a positive number.";
+                return false;
+            }
+
+            if (img === "") {
+                error.innerHTML = "Please upload a picture.";
+                return false;
+            }
+
+            error.style.color = "green";
+            error.innerHTML = "Valid!";
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>
