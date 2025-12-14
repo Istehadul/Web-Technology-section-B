@@ -1,0 +1,199 @@
+<html>
+
+<head>
+    <title>Dynamic Registration Form</title>
+</head>
+
+<body>
+
+    <h2>Registration Form</h2>
+
+    Enter field name (Username, Email, ID, DOB, Mobile, Gender):
+    <br>
+    <input id="commandInput" type="text">
+    <button onclick="processCommand()">OK</button>
+
+    <br><br>
+
+    <div id="dynamicField"></div>
+
+    <hr>
+
+    <h3>Stored Values</h3>
+    <div id="storedValues">No values yet.</div>
+
+    <script>
+        // Store all values
+        var stored = {
+            username: "",
+            email: "",
+            id: "",
+            dob: "",
+            mobile: "",
+            gender: ""
+        };
+
+        // Check command
+        function processCommand() {
+            var cmd = document.getElementById("commandInput").value.toLowerCase().trim();
+            document.getElementById("dynamicField").innerHTML = "";
+
+            if (cmd === "username") showUsername();
+            else if (cmd === "email") showEmail();
+            else if (cmd === "id") showID();
+            else if (cmd === "dob") showDOB();
+            else if (cmd === "mobile") showMobile();
+            else if (cmd === "gender") showGender();
+            else
+                document.getElementById("dynamicField").innerHTML = "<span style='color:red'>Invalid command!</span>";
+        }
+
+        // Username Field
+        function showUsername() {
+            document.getElementById("dynamicField").innerHTML =
+                "Enter Username:<br>" +
+                "<input id='valueInput' type='text'><br>" +
+                "<span id='error' style='color:red'></span><br>" +
+                "<button onclick='validate(\"username\")'>Submit</button>";
+        }
+
+        // Email Field
+        function showEmail() {
+            document.getElementById("dynamicField").innerHTML =
+                "Enter Email:<br>" +
+                "<input id='valueInput' type='text'><br>" +
+                "<span id='error' style='color:red'></span><br>" +
+                "<button onclick='validate(\"email\")'>Submit</button>";
+        }
+
+        // ID Field
+        function showID() {
+            document.getElementById("dynamicField").innerHTML =
+                "Enter ID (letters, numbers, special characters allowed):<br>" +
+                "<input id='valueInput' type='text'><br>" +
+                "<span id='error' style='color:red'></span><br>" +
+                "<button onclick='validate(\"id\")'>Submit</button>";
+        }
+
+        // DOB Field
+        function showDOB() {
+            document.getElementById("dynamicField").innerHTML =
+                "Select Date of Birth:<br>" +
+                "<input id='dobInput' type='date'><br>" +
+                "<span id='error' style='color:red'></span><br>" +
+                "<button onclick='validate(\"dob\")'>Submit</button>";
+        }
+
+        // Mobile Field
+        function showMobile() {
+            document.getElementById("dynamicField").innerHTML =
+                "Enter Mobile Number:<br>" +
+                "<input id='valueInput' type='text'><br>" +
+                "<span id='error' style='color:red'></span><br>" +
+                "<button onclick='validate(\"mobile\")'>Submit</button>";
+        }
+
+        // Gender Field
+        function showGender() {
+            document.getElementById("dynamicField").innerHTML =
+                "Select Gender:<br>" +
+                "<input type='radio' name='g' value='Male'> Male<br>" +
+                "<input type='radio' name='g' value='Female'> Female<br>" +
+                "<span id='error' style='color:red'></span><br>" +
+                "<button onclick='validate(\"gender\")'>Submit</button>";
+        }
+
+
+        // VALIDATION SECTION
+        function validate(type) {
+
+            var error = document.getElementById("error");
+
+            // USERNAME
+            if (type === "username") {
+                var value = document.getElementById("valueInput").value;
+                var namePattern = /^[A-Za-z ]+$/;
+
+                if (!namePattern.test(value)) {
+                    error.innerHTML = "Only letters & spaces allowed!";
+                    return;
+                }
+                stored.username = value;
+            }
+
+            // EMAIL
+            if (type === "email") {
+                var value = document.getElementById("valueInput").value;
+                var emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+                if (!emailPattern.test(value)) {
+                    error.innerHTML = "Invalid email!";
+                    return;
+                }
+                stored.email = value;
+            }
+
+            // ID
+            if (type === "id") {
+                var value = document.getElementById("valueInput").value;
+                if (value.trim() === "") {
+                    error.innerHTML = "ID cannot be empty!";
+                    return;
+                }
+                stored.id = value;
+            }
+
+            // DOB
+            if (type === "dob") {
+                var dob = document.getElementById("dobInput").value;
+                if (dob === "") {
+                    error.innerHTML = "Select date!";
+                    return;
+                }
+                stored.dob = dob;
+            }
+
+            // MOBILE
+            if (type === "mobile") {
+                var value = document.getElementById("valueInput").value;
+                var mobilePattern = /^[0-9]{11}$/;
+
+                if (!mobilePattern.test(value)) {
+                    error.innerHTML = "Mobile must be 11 digits!";
+                    return;
+                }
+                stored.mobile = value;
+            }
+
+            // GENDER
+            if (type === "gender") {
+                var g = document.querySelector("input[name='g']:checked");
+                if (!g) {
+                    error.innerHTML = "Please select a gender!";
+                    return;
+                }
+                stored.gender = g.value;
+            }
+
+            // Success Message
+            error.style.color = "green";
+            error.innerHTML = "Saved!";
+
+            showStored();
+        }
+
+        // Print all values
+        function showStored() {
+            document.getElementById("storedValues").innerHTML =
+                "Username: " + stored.username + "<br>" +
+                "Email: " + stored.email + "<br>" +
+                "ID: " + stored.id + "<br>" +
+                "DOB: " + stored.dob + "<br>" +
+                "Mobile: " + stored.mobile + "<br>" +
+                "Gender: " + stored.gender;
+        }
+    </script>
+
+</body>
+
+</html>
